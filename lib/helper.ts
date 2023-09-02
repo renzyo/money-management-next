@@ -10,7 +10,7 @@ export function getErrorResponse(
     JSON.stringify({
       status: status < 500 ? "fail" : "error",
       message,
-      errors: errors ? errors.flatten() : null,
+      errors: errors ? errors : null,
     }),
     {
       status,

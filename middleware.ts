@@ -37,13 +37,17 @@ export async function middleware(req: NextRequest) {
   try {
     if (token) {
       const { sub } = await verifyJWT<{ sub: string }>(token);
-      response.headers.set("X-User-Id", sub);
+      response.headers.set("X-USER-ID", sub);
       (req as AuthenticatedRequest).user = { id: sub };
     }
-  } catch (error) {
+  } catch (error: any) {
     redirectToLogin = true;
     if (req.nextUrl.pathname.startsWith("/api")) {
-      return getErrorResponse(401, "Token is invalid or user doesn't exists.");
+      return getErrorResponse(
+        401,
+        "Token is invalid or user doesn't exists.",
+        error
+      );
     }
 
     return NextResponse.redirect(
